@@ -1,0 +1,70 @@
+<div id="email-subscribe-floater">
+  <h3>
+    <!--<img src="http://blog.mailgun.com/assets/images/mailgun-mark-red.svg" alt="Mailgun">-->
+    Get posts by email
+  </h3>
+  <p>Like what you're reading? Get these posts delivered to your inbox.</p>
+  <form accept-charset="UTF-8" action="http://feedburner.google.com/fb/a/mailverify" method="post" class="email-subscribe-form" onsubmit="window.open('http://feedburner.google.com/fb/a/mailverify?uri=techumber', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true" target="popupwindow">
+    <input type="email" id="subscriber_email" name="email" placeholder="your@email.com">
+    <input name="uri" type="hidden" value="techumber">
+    <input name="loc" type="hidden" value="en_US">
+    <button type="submit" name="subscribe" id="mailgun_subscribe_btn" class="btn">Subscribe</button>
+    <small>No spam, ever.</small>
+  </form>
+  
+</div>
+
+<style>
+#email-subscribe-floater.visible {
+    right: -40px;
+}
+#email-subscribe-floater {
+    width: 330px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.25);
+    position: fixed;
+    right: -400px;
+    bottom: 20px;
+    background: #fff;
+    padding: 16px 56px 16px 16px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #8c8c8c;
+    transition: right .5s cubic-bezier(.34, 1.61, .7, 1);
+}
+#email-subscribe-floater h3 {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 200;
+    color: #000;
+    margin-bottom: 12px;
+}
+.email-subscribe-form {
+    padding-top: 12px;
+}
+#email-subscribe-floater .email-subscribe-form small {
+    display: inline-block;
+    font-size: 12px;
+    margin-top: 14px;
+}
+.email-subscribe-form small {
+    display: block;
+    margin-top: 6px;
+    font-size: 9px;
+    line-height: 12px;
+    color: #aaa;
+}
+</style>
+
+<script>
+window.onload = function() {
+    $(function() {
+        $(window).on('scroll', function () { 
+            if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.5 && $(document).width() > 599 ){
+                $("#email-subscribe-floater").addClass('visible');
+            } else {
+                $("#email-subscribe-floater").removeClass('visible');
+            }
+        });
+    });
+};
+</script>

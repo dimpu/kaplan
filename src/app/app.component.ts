@@ -1,59 +1,78 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { trigger, transition, style, animate, state, keyframes} from '@angular/animations';
 import data from './channel';
-import * as moment from 'moment';
-import 'moment-timezone';
+import { IChannel, Channel } from './channel.model';
 
-interface Channel {
-  title: string;
-  description: string;
-  instructorName: string;
-  instructorPhotoUrl: string;
-  subjectPhotoUrl: string;
-  time: string;
-  timeInterval?: string;
-}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('fadeIn', [ // example how we can create simple animations for better UX.
+      state('in', style({transform: 'translateY(0)'})),
+      transition(':enter', [
+        animate(500, keyframes([
+          style({opacity: 0, transform: 'translateY(-100%)', offset: 0}),
+          style({opacity: 1, transform: 'translateY(15px)',  offset: 0.3}),
+          style({opacity: 1, transform: 'translateY(0)',     offset: 1.0})
+        ]))
+      ]),
+    ]),
+  ]
+
 })
 export class AppComponent implements AfterViewInit {
-  public channels: Array<Channel> = [];
+  public channels: Array<IChannel> = [];
+  public displayChannels: any = [];
+  public displayTitle: any = [];
+  private _displayTitle: any = [];
+  next: number = 0;
 
   ngAfterViewInit() {
     // simulate http delay
     setTimeout(() => {
       this.channels = data;
+      this.genDisplayData();
+      this._displayTitle = this.getDisplayKeys();
+      this.doNext();
     }, 1000);
+  }
+
+  doNext() {
+    if(this.next < this._displayTitle.length) {
+      this.displayTitle.push(this._displayTitle[this.next++]);
+    }
   }
 
   /*
   Convert into Channal Objects array by Time.
   */
-  getDisplayData() {
-    let displayChannels = {};
+  genDisplayData() {
     for (let channel of this.channels) {
-      let time = moment(channel.time);
-      let displayTime = time.format('ddd, MMMM D, YYYY');
-      channel.timeInterval = time.tz('America/New_York').format('LT') + ' - ' + time.tz('America/New_York').format('ha z');
-      if (displayChannels[displayTime]) {
-        displayChannels[displayTime] = [...displayChannels[displayTime], channel];
+      channel = new Channel(
+        channel.title,
+        channel.description,
+        channel.instructorName,
+        channel.instructorPhotoUrl,
+        channel.subjectPhotoUrl,
+        channel.time)
+
+      let displayTime = channel.displayTime;
+      if (this.displayChannels[displayTime]) {
+        this.displayChannels[displayTime] = [...this.displayChannels[displayTime], channel];
       } else {
-        displayChannels[displayTime] = [channel];
+        this.displayChannels[displayTime] = [channel];
       }
     }
-    return displayChannels;
   }
 
   /*
   * Get all display keys of the channel data; 
   */
   getDisplayKeys() {
-    let data = this.channels.map(channel => moment(channel.time).format("YYYY-MM-DD"))
-      .sort((a, b) => a > b ? 1 : -1)
+    return Object.keys(this.displayChannels)
+      .sort((a, b) => new Date(a) > new Date(b) ? 1 : -1)
       .filter((item, index, self) => self.indexOf(item) == index)
-      .map(d => moment(d).format('ddd, MMMM D, YYYY'));
-    return data;
   }
 }

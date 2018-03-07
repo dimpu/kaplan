@@ -1,15 +1,20 @@
 <div class="container">
-  <div class="row" *ngFor="let channelTitle of getDisplayKeys() ">
+  <div class="row" [@fadeIn] (@fadeIn.done)="doNext()" *ngFor="let channelTitle of displayTitle">
     <h4 class="h4 pt-5 pb-3">
       {{channelTitle}}
     </h4>
-    <div class="card rounded-0" *ngFor="let channel of getDisplayData()[channelTitle]">
+    <div class="card rounded-0" [@fadeIn] *ngFor="let channel of displayChannels[channelTitle]">
       <div class="card-body p-4 ">
-        <div class="d-flex flex-row">
-          <div class="pr-2">
+        <div class="d-flex flex-xs-column flex-sm-column flex-md-column flex-lg-row flex-wrap">
+          <div class="pr-2 d-none d-lg-block">
             <img class="rounded-circle pull-up" [src]="channel.subjectPhotoUrl" alt="">
           </div>
-          <div class="">
+
+          <div class="mx-auto d-block d-lg-none">
+            <img class="img-fluid" [src]="channel.subjectPhotoUrl" alt="">
+          </div> 
+
+          <div class="col-lg">
             <h3 class="h5">
               <strong class="text-black">
                 {{channel.title}}
@@ -19,7 +24,7 @@
               {{channel.description}}
             </p>
           </div>
-          <div class="d-flex col-4 flex-row justify-content-between">
+          <div class="d-flex flex-row  col-md-12 col-lg-4 p-0 justify-content-between">
             <div class="justify-content-between">
               <img class="rounded-circle" [src]="channel.instructorPhotoUrl" alt="">
               <strong>{{channel.instructorName}}</strong>
