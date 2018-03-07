@@ -124,10 +124,6 @@ MIT
 MIT
 MIT
 
-@angular/common@5.2.7
-MIT
-MIT
-
 @types/moment-timezone@0.5.4
 MIT
 MIT License
@@ -151,6 +147,14 @@ MIT License
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+
+@angular/animations@5.2.7
+MIT
+MIT
+
+@angular/common@5.2.7
+MIT
+MIT
 
 @angular/platform-browser-dynamic@5.2.7
 MIT
